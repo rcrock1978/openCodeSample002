@@ -1,26 +1,212 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import "@xyflow/react/dist/style.css";
 
 @theme inline {
+  /* Fonts */
+  --font-sans: var(--font-ibm-plex-sans);
+  --font-mono: var(--font-ibm-plex-mono);
+  --font-display: var(--font-fraunces);
+
+  /* Semantic tokens */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
+
+  /* Chart colors */
+  --color-chart-1: oklch(0.78 0.16 61);
+  --color-chart-2: oklch(0.77 0.134 178);
+  --color-chart-3: oklch(0.65 0.15 280);
+  --color-chart-4: oklch(0.72 0.18 25);
+  --color-chart-5: oklch(0.65 0.18 145);
+
+  /* Animation keyframes */
+  --animate-fade-up: fade-up 0.5s ease-out forwards;
+  --animate-scale-in: scale-in 0.4s ease-out forwards;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: oklch(0.94 0.032 86);
+  --foreground: oklch(0.19 0.029 252);
+  --card: oklch(0.985 0.026 92 / 84%);
+  --primary: oklch(0.68 0.165 55);
+  --accent: oklch(0.78 0.122 174);
+  --secondary: oklch(0.86 0.055 184 / 80%);
+  --muted: oklch(0.88 0.03 84 / 68%);
+  --muted-foreground: oklch(0.42 0.036 252);
+  --border: oklch(0.24 0.035 252 / 18%);
+  --ring: oklch(0.76 0.14 174);
+  --destructive: oklch(0.58 0.21 31);
+}
+
+.dark {
+  --background: oklch(0.15 0.038 252);
+  --foreground: oklch(0.94 0.034 88);
+  --card: oklch(0.205 0.044 252 / 78%);
+  --primary: oklch(0.78 0.16 61);
+  --accent: oklch(0.77 0.134 178);
+  --secondary: oklch(0.25 0.06 244 / 74%);
+  --muted: oklch(0.26 0.052 252 / 64%);
+  --muted-foreground: oklch(0.73 0.042 88);
+  --border: oklch(0.98 0.02 88 / 14%);
+  --ring: oklch(0.8 0.15 178);
+  --destructive: oklch(0.68 0.21 31);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Planner background: blueprint grid + colored orbs */
+.planner-bg {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(circle at 20% 30%, oklch(0.78 0.16 61 / 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, oklch(0.77 0.134 178 / 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, oklch(0.65 0.15 280 / 0.06) 0%, transparent 60%),
+    linear-gradient(oklch(0.98 0.02 88 / 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.98 0.02 88 / 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+}
+
+/* Glass panel for hero/header */
+.glass-panel {
+  background: var(--card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  box-shadow: inset 0 1px 0 0 oklch(1 0 0 / 0.08), 0 8px 32px oklch(0 0 0 / 0.2);
+}
+
+/* Paper card for default cards */
+.paper-card {
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px oklch(0 0 0 / 0.15);
+}
+
+/* Blueprint surface for graphs and empty states */
+.blueprint-surface {
+  background-color: oklch(0.12 0.04 252);
+  background-image:
+    linear-gradient(oklch(0.77 0.134 178 / 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.77 0.134 178 / 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  border: 1px solid oklch(0.77 0.134 178 / 0.15);
+  border-radius: 0.75rem;
+}
+
+/* Command strip for primary CTAs */
+.command-strip {
+  background: linear-gradient(135deg, oklch(0.78 0.16 61), oklch(0.77 0.134 178), oklch(0.65 0.15 280));
+  color: oklch(0.15 0.038 252);
+  font-weight: 700;
+  border-radius: 9999px;
+  box-shadow: 0 4px 16px oklch(0.78 0.16 61 / 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.command-strip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px oklch(0.78 0.16 61 / 0.4);
+}
+
+/* Micro label: technical uppercase label */
+.micro-label {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted-foreground);
+}
+
+/* Font display class */
+.font-display {
+  font-family: var(--font-display), ui-serif, Georgia, serif;
+}
+
+.font-code {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+/* Animations */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.5s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s ease-out forwards;
+}
+
+/* React Flow overrides for dark theme */
+.react-flow {
+  --xy-edge-stroke: oklch(0.77 0.134 178);
+  --xy-edge-stroke-selected: oklch(0.78 0.16 61);
+  --xy-node-border-default: oklch(0.98 0.02 88 / 0.14);
+  --xy-handle-background-color-default: oklch(0.77 0.134 178);
+}
+
+.react-flow__attribution {
+  display: none;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(0.98 0.02 88 / 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.98 0.02 88 / 0.25);
+}
+
+/* Focus rings */
+.focus-ring:focus-visible {
+  outline: none;
+  ring: 3px solid var(--ring);
+  ring-opacity: 0.5;
 }
